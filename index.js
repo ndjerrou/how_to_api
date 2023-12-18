@@ -15,6 +15,8 @@ app.get('/products', (req, res) => {
   res.send(products);
 });
 
+// Dealing with Query String Parameters
+
 // http://localhost:8000/products?title=Tintin
 app.get('/products/title', (req, res) => {
   // 1 - récupérer la query title
@@ -35,6 +37,21 @@ app.get('/products/title', (req, res) => {
     ok: true,
     data: product,
   });
+});
+
+// route parameters
+app.get('/products/:id', (req, res) => {
+  const id = +req.params.id;
+
+  const product = products.find(product => product.id === id);
+
+  if (!product)
+    return res.status(404).send({
+      ok: false,
+      msg: 'Product not found',
+    });
+
+  res.send({ ok: true, data: product });
 });
 
 const PORT = process.env.PORT || 8000;
