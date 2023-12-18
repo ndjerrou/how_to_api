@@ -1,0 +1,37 @@
+[
+  {
+    "title": "Smartphone X",
+    "year": 2023,
+    "desc": "A powerful smartphone with advanced features.",
+    "price": 799.99,
+    "color": "Black"
+  },
+  {
+    "title": "Laptop Pro",
+    "year": 2023,
+    "desc": "High-performance laptop for professional use.",
+    "price": 1499.99,
+    "color": "Silver"
+  },
+  {
+    "title": "Wireless Headphones",
+    "year": 2023,
+    "desc": "Noise-canceling headphones for immersive audio.",
+    "price": 249.99,
+    "color": "White"
+  },
+  {
+    "title": "Smartwatch 3.0",
+    "year": 2023,
+    "desc": "Track your fitness and stay connected on the go.",
+    "price": 349.99,
+    "color": "Blue"
+  },
+  {
+    "title": "Portable Speaker",
+    "year": 2023,
+    "desc": "Compact speaker with excellent sound quality.",
+    "price": 129.99,
+    "color": "Red"
+  }
+]
