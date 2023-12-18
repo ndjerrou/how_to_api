@@ -107,6 +107,32 @@ app.put('/products/:id', async (req, res) => {
   });
 });
 
+app.delete('/products/:id', async (req, res) => {
+  const id = +req.params.id;
+
+  const product = products.find(product => product.id === id);
+
+  if (!product)
+    return res.status(404).send({
+      ok: false,
+      msg: 'Product not found',
+    });
+
+  const filteredProducts = products.filter(product => product.id !== id);
+
+  const savingPath = path.join(__dirname, 'products.json');
+
+  const isWritten = await writeFile(savingPath, filteredProducts);
+
+  if (isWritten)
+    return res.status(200).send({ ok: true, data: filteredProducts });
+
+  res.status(500).send({
+    ok: false,
+    msg: 'Problem Server',
+  });
+});
+
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {

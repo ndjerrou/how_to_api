@@ -1,13 +1,5 @@
 [
   {
-    "id": 1,
-    "title": "Smartphone X",
-    "year": 2023,
-    "desc": "A powerful smartphone with advanced features.",
-    "price": 799.99,
-    "color": "Black"
-  },
-  {
     "id": 2,
     "title": "Laptop Pro",
     "year": 2023,
@@ -39,14 +31,6 @@
     "desc": "Compact speaker with excellent sound quality.",
     "price": 129.99,
     "color": "Red"
-  },
-  {
-    "year": 1990,
-    "title": "Tintin au Congo",
-    "desc": "Milou se balade au Congo",
-    "color": "white",
-    "price": 2000,
-    "id": 6
   },
   {
     "title": "Smartphone X",
