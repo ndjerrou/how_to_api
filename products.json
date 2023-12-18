@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "title": "Smartphone X",
     "year": 2023,
     "desc": "A powerful smartphone with advanced features.",
@@ -7,6 +8,7 @@
     "color": "Black"
   },
   {
+    "id": 2,
     "title": "Laptop Pro",
     "year": 2023,
     "desc": "High-performance laptop for professional use.",
@@ -14,6 +16,7 @@
     "color": "Silver"
   },
   {
+    "id": 3,
     "title": "Wireless Headphones",
     "year": 2023,
     "desc": "Noise-canceling headphones for immersive audio.",
@@ -21,6 +24,7 @@
     "color": "White"
   },
   {
+    "id": 4,
     "title": "Smartwatch 3.0",
     "year": 2023,
     "desc": "Track your fitness and stay connected on the go.",
@@ -28,6 +32,7 @@
     "color": "Blue"
   },
   {
+    "id": 5,
     "title": "Portable Speaker",
     "year": 2023,
     "desc": "Compact speaker with excellent sound quality.",
