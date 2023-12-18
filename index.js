@@ -1,7 +1,8 @@
-const fs = require('node:fs/promises');
-
 const express = require('express');
-console.log(__dirname);
+
+const writeFile = require('./utils/file');
+const path = require('path');
+
 const app = express();
 
 // registering middlewares
@@ -62,18 +63,48 @@ app.post('/products', async (req, res) => {
 
   products.push(product);
 
-  try {
-    await fs.writeFile(__dirname + '/products.json', JSON.stringify(products));
+  const savingPath = path.join(__dirname, 'products.json');
 
-    res.status(201).send({ ok: true, data: product });
-  } catch (err) {
-    console.error(err.message);
+  const isWritten = await writeFile(savingPath, products);
 
-    res.status(500).send({
+  if (isWritten) return res.status(201).send({ ok: true, data: product });
+
+  res.status(500).send({
+    ok: false,
+    msg: 'Problem Server',
+  });
+});
+
+// @TODO : make the PUT and DELETE endpoints for managing a product
+
+app.put('/products/:id', async (req, res) => {
+  const id = +req.params.id;
+
+  const product = products.find(product => product.id === id);
+
+  if (!product)
+    return res.status(404).send({
       ok: false,
-      msg: 'Problem Server',
+      msg: 'Product not found',
     });
-  }
+
+  const modifiedProducts = products.map(product => {
+    if (product.id === id) product = { ...product, ...req.body };
+
+    return product;
+  });
+
+  const savingPath = path.join(__dirname, 'products.json');
+
+  const isWritten = await writeFile(savingPath, modifiedProducts);
+
+  if (isWritten)
+    return res.status(201).send({ ok: true, data: modifiedProducts });
+
+  res.status(500).send({
+    ok: false,
+    msg: 'Problem Server',
+  });
 });
 
 const PORT = process.env.PORT || 8000;

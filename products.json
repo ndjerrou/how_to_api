@@ -12,8 +12,9 @@
     "title": "Laptop Pro",
     "year": 2023,
     "desc": "High-performance laptop for professional use.",
-    "price": 1499.99,
-    "color": "Silver"
+    "price": "2000",
+    "color": "Silver",
+    "hihihi": "nimporte quoi"
   },
   {
     "id": 3,
@@ -46,5 +47,13 @@
     "color": "white",
     "price": 2000,
     "id": 6
+  },
+  {
+    "title": "Smartphone X",
+    "year": 2023,
+    "desc": "A powerful smartphone with advanced features.",
+    "price": 799.99,
+    "color": "PURPLE",
+    "id": 7
   }
 ]
