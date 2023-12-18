@@ -1,9 +1,12 @@
-const express = require('express');
+const fs = require('node:fs/promises');
 
+const express = require('express');
+console.log(__dirname);
 const app = express();
 
 // registering middlewares
-// app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 const products = require('./products.json');
 
@@ -52,6 +55,25 @@ app.get('/products/:id', (req, res) => {
     });
 
   res.send({ ok: true, data: product });
+});
+
+app.post('/products', async (req, res) => {
+  const product = { ...req.body, id: products[products.length - 1].id + 1 };
+
+  products.push(product);
+
+  try {
+    await fs.writeFile(__dirname + '/products.json', JSON.stringify(products));
+
+    res.status(201).send({ ok: true, data: product });
+  } catch (err) {
+    console.error(err.message);
+
+    res.status(500).send({
+      ok: false,
+      msg: 'Problem Server',
+    });
+  }
 });
 
 const PORT = process.env.PORT || 8000;
