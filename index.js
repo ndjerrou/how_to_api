@@ -17,13 +17,24 @@ app.get('/products', (req, res) => {
 
 // http://localhost:8000/products?title=Tintin
 app.get('/products/title', (req, res) => {
-  //   const book = products[0];
-
   // 1 - récupérer la query title
+  const title = req.query.title;
 
   // 2 - renvoyer au client le bon livre
+  const product = products.find(
+    product => product.title.toLowerCase() === title.toLowerCase()
+  );
 
-  res.send(req.query);
+  if (!product)
+    return res.status(404).send({
+      ok: false,
+      msg: 'Product not found',
+    });
+
+  res.send({
+    ok: true,
+    data: product,
+  });
 });
 
 const PORT = process.env.PORT || 8000;
