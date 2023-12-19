@@ -7,8 +7,8 @@ const writeFile = require('./utils/file');
 
 const app = express();
 
-require('dotenv').config();
-require('./db/connect')(); // process.env
+require('dotenv').config(); // process.env
+require('./db/connect')();
 
 // registering middlewares
 app.use(express.urlencoded({ extended: true }));
@@ -66,23 +66,22 @@ app.get('/products/:id', (req, res) => {
 });
 
 app.post('/products', async (req, res) => {
-  const product = { ...req.body, id: products[products.length - 1].id + 1 };
+  const product = new Product({ ...req.body }); // a single document
 
-  products.push(product);
-
-  const savingPath = path.join(__dirname, 'products.json');
-
-  const isWritten = await writeFile(savingPath, products);
-
-  if (isWritten) return res.status(201).send({ ok: true, data: product });
-
-  res.status(500).send({
-    ok: false,
-    msg: 'Problem Server',
-  });
+  try {
+    await product.save();
+    res.status(201).send({
+      ok: true,
+      data: product,
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send({
+      ok: false,
+      msg: 'Internal Server Error',
+    });
+  }
 });
-
-// @TODO : make the PUT and DELETE endpoints for managing a product
 
 app.put('/products/:id', async (req, res) => {
   const id = +req.params.id;
@@ -100,8 +99,6 @@ app.put('/products/:id', async (req, res) => {
 
     return product;
   });
-
-  const savingPath = path.join(__dirname, 'products.json');
 
   const isWritten = await writeFile(savingPath, modifiedProducts);
 
@@ -127,8 +124,6 @@ app.delete('/products/:id', async (req, res) => {
 
   const filteredProducts = products.filter(product => product.id !== id);
 
-  const savingPath = path.join(__dirname, 'products.json');
-
   const isWritten = await writeFile(savingPath, filteredProducts);
 
   if (isWritten)
@@ -143,5 +138,6 @@ app.delete('/products/:id', async (req, res) => {
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
+  console.clear();
   console.log(`Listenning on port ${PORT}`);
 });
