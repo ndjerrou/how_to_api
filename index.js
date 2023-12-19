@@ -88,55 +88,37 @@ app.post('/products', async (req, res) => {
 });
 
 app.put('/products/:id', async (req, res) => {
-  const id = +req.params.id;
+  const id = req.params.id;
 
-  const product = products.find(product => product.id === id);
+  // let product = await Product.findById(id);
 
-  if (!product)
-    return res.status(404).send({
-      ok: false,
-      msg: 'Product not found',
-    });
+  // product.year = 1990;
 
-  const modifiedProducts = products.map(product => {
-    if (product.id === id) product = { ...product, ...req.body };
+  // // product = { ...product, ...req.body };
 
-    return product;
+  // await product.save();
+
+  // res.send(product);
+
+  const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
+    new: true,
   });
 
-  const isWritten = await writeFile(savingPath, modifiedProducts);
-
-  if (isWritten)
-    return res.status(201).send({ ok: true, data: modifiedProducts });
-
-  res.status(500).send({
-    ok: false,
-    msg: 'Problem Server',
-  });
+  res.send(updatedProduct);
 });
 
 app.delete('/products/:id', async (req, res) => {
-  const id = +req.params.id;
+  const id = req.params.id;
 
-  const product = products.find(product => product.id === id);
+  try {
+    const deletedProduct = await Product.findByIdAndDelete(id);
+    res.send({ ok: true, data: deletedProduct });
+  } catch (err) {
+    console.error(err.message);
+    res.status(404).send({ ok: false, msg: 'Id given not correct' });
+  }
 
-  if (!product)
-    return res.status(404).send({
-      ok: false,
-      msg: 'Product not found',
-    });
-
-  const filteredProducts = products.filter(product => product.id !== id);
-
-  const isWritten = await writeFile(savingPath, filteredProducts);
-
-  if (isWritten)
-    return res.status(200).send({ ok: true, data: filteredProducts });
-
-  res.status(500).send({
-    ok: false,
-    msg: 'Problem Server',
-  });
+  res.send(deletedProduct);
 });
 
 const PORT = process.env.PORT || 8000;
