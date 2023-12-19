@@ -15,7 +15,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 const products = require('./products.json');
-
 // CRUD - Create Read Update Delete
 
 // [GET /users - GET /users/id - POST /users - PUT /users/id - DELETE /users/id] ==> API RESTFull
@@ -23,7 +22,10 @@ const products = require('./products.json');
 app.get('/products', async (req, res) => {
   const products = await Product.find();
 
-  res.send(products);
+  res.send({
+    ok: true,
+    data: products,
+  });
 });
 
 // Dealing with Query String Parameters
@@ -51,18 +53,20 @@ app.get('/products/title', (req, res) => {
 });
 
 // route parameters
-app.get('/products/:id', (req, res) => {
-  const id = +req.params.id;
+app.get('/products/:id', async (req, res) => {
+  const id = req.params.id;
 
-  const product = products.find(product => product.id === id);
+  try {
+    const product = await Product.findById(id);
 
-  if (!product)
-    return res.status(404).send({
+    res.send({ ok: true, data: product });
+  } catch (err) {
+    console.error(err.message);
+    res.status(404).send({
       ok: false,
-      msg: 'Product not found',
+      msg: 'Product not found with the given ID',
     });
-
-  res.send({ ok: true, data: product });
+  }
 });
 
 app.post('/products', async (req, res) => {
