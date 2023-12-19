@@ -31,10 +31,20 @@ module.exports = {
   async createOneProduct(req, res) {
     const schema = Joi.object({
       title: Joi.string().required(),
+      year: Joi.number().required(),
+      color: Joi.string().required(),
+      desc: Joi.string().required(),
+      price: Joi.number().required(),
     });
 
     const result = schema.validate(req.body);
-    return res.send(result);
+
+    if (result.error) {
+      return res.status(400).send({
+        ok: false,
+        msg: result.error.details[0].message,
+      });
+    }
 
     const product = new Product({ ...req.body }); // a single document
 
@@ -55,6 +65,23 @@ module.exports = {
   async updateOneProduct(req, res) {
     const id = req.params.id;
 
+    const schema = Joi.object({
+      title: Joi.string(),
+      year: Joi.number(),
+      color: Joi.string(),
+      desc: Joi.string(),
+      price: Joi.number(),
+    });
+
+    const result = schema.validate(req.body);
+
+    if (result.error) {
+      return res.status(400).send({
+        ok: false,
+        msg: result.error.details[0].message,
+      });
+    }
+
     // let product = await Product.findById(id);
 
     // product.year = 1990;
@@ -69,7 +96,7 @@ module.exports = {
       new: true,
     });
 
-    res.send(updatedProduct);
+    res.send({ ok: true, data: updatedProduct });
   },
   async deleteOneProduct(req, res) {
     const id = req.params.id;
