@@ -1,9 +1,14 @@
-const express = require('express');
-
-const writeFile = require('./utils/file');
 const path = require('path');
 
+const express = require('express');
+
+const Product = require('./resources/products/products.model');
+const writeFile = require('./utils/file');
+
 const app = express();
+
+require('dotenv').config();
+require('./db/connect')(); // process.env
 
 // registering middlewares
 app.use(express.urlencoded({ extended: true }));
@@ -15,7 +20,9 @@ const products = require('./products.json');
 
 // [GET /users - GET /users/id - POST /users - PUT /users/id - DELETE /users/id] ==> API RESTFull
 
-app.get('/products', (req, res) => {
+app.get('/products', async (req, res) => {
+  const products = await Product.find();
+
   res.send(products);
 });
 
