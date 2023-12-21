@@ -4,6 +4,7 @@ const express = require('express');
 const morgan = require('morgan');
 
 const products = require('./resources/products/products.route');
+const users = require('./resources/users/users.route');
 
 const app = express();
 
@@ -35,10 +36,12 @@ app.use((req, res, next) => {
   console.log('is body?', req.body);
   console.log('is pokemon ?', res.pokemon);
   // res.send('Stop connexion');
+  console.clear();
   next();
 });
 
 app.use('/api/v1/products', products);
+app.use('/api/v1/users', users);
 
 const PORT = process.env.PORT || 8000;
 
