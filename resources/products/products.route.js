@@ -8,13 +8,15 @@ const {
   updateOneProduct,
 } = require('./products.controller');
 
+const checkIncomingPayload = require('../../middlewares/checkIncomingPayload');
+
 const router = express.Router();
 
 router.route('').get(getAllProducts).post(createOneProduct);
 router
   .route('/:id')
   .get(getOneProduct)
-  .put(updateOneProduct)
+  .put(checkIncomingPayload, updateOneProduct)
   .delete(deleteOneProduct);
 
 module.exports = router;

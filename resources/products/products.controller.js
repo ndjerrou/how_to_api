@@ -65,33 +65,6 @@ module.exports = {
   async updateOneProduct(req, res) {
     const id = req.params.id;
 
-    const schema = Joi.object({
-      title: Joi.string(),
-      year: Joi.number(),
-      color: Joi.string(),
-      desc: Joi.string(),
-      price: Joi.number(),
-    });
-
-    const result = schema.validate(req.body);
-
-    if (result.error) {
-      return res.status(400).send({
-        ok: false,
-        msg: result.error.details[0].message,
-      });
-    }
-
-    // let product = await Product.findById(id);
-
-    // product.year = 1990;
-
-    // // product = { ...product, ...req.body };
-
-    // await product.save();
-
-    // res.send(product);
-
     const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
       new: true,
     });
